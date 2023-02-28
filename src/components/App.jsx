@@ -42,14 +42,16 @@ class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState(prevPage => ({ page: ++prevPage }));
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-  // componentDidUpdate(_, prevState) {
-  //   if (prevState.page !== this.state.page) {
-  //     this.fetchImages(this.state.query, this.state.page);
-  //   }
-  // }
+  componentDidUpdate(_, prevState) {
+    if (prevState.page !== this.state.page) {
+      const query = this.state.query;
+      const page = this.state.page;
+      this.fetchImages(query, page);
+    }
+  }
 
   render() {
     return (
