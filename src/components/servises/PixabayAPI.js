@@ -1,4 +1,5 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 export const queryPixabayAPI = async (query, page) => {
   const params = {
@@ -12,4 +13,9 @@ export const queryPixabayAPI = async (query, page) => {
 
   const { data } = await axios.get('https://pixabay.com/api/', { params });
   return data.hits;
+};
+
+queryPixabayAPI.propTypes = {
+  query: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
 };

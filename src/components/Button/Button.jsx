@@ -1,4 +1,5 @@
 import { ButtonBox } from './Button.styled';
+import PropTypes from 'prop-types';
 
 const Button = props => {
   const { handleLoadMore } = props;
@@ -12,3 +13,7 @@ const Button = props => {
 };
 
 export default Button;
+
+Button.propTypes = {
+  props: PropTypes.node,
+};

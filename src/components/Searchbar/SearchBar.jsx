@@ -2,8 +2,13 @@ import SearchbarStyled from './SearchBar.styled';
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import { FaSearch } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 class SearchBar extends Component {
+  static propTypes = {
+    props: PropTypes.node,
+  };
+
   state = {
     inputValue: '',
   };

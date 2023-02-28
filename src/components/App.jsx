@@ -50,6 +50,7 @@ class App extends Component {
       const query = this.state.query;
       const page = this.state.page;
       this.fetchImages(query, page);
+      window.scrollTo({ bottom: -100, left: 0, behavior: 'smooth' });
     }
   }
 

@@ -1,8 +1,13 @@
 import ImageGalleryItemStyled from './ImageGalleryItem.styled';
 import Modal from 'components/Modal/Modal';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class ImageGalleryItem extends Component {
+  static propTypes = {
+    props: PropTypes.arrayOf(PropTypes.object.isRequired),
+  };
+
   state = {
     isModalOpen: false,
     imageUrl: '',
