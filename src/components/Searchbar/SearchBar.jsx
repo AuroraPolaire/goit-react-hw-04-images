@@ -1,6 +1,7 @@
 import SearchbarStyled from './SearchBar.styled';
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
+import { FaSearch } from 'react-icons/fa';
 
 class SearchBar extends Component {
   state = {
@@ -23,12 +24,14 @@ class SearchBar extends Component {
   };
 
   render() {
+    const style = { fontSize: '180%', transition: 'font-size 0.5s' };
     const { inputValue } = this.state;
     return (
       <SearchbarStyled>
         <form className="SearchForm" onSubmit={this.handleSubmit}>
           <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">Search</span>
+            <FaSearch style={style} />
+            {/* <span className="SearchForm-button-label">Search</span> */}
           </button>
 
           <input
