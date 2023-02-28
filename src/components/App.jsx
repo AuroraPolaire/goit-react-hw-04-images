@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { queryPixabayAPI } from './servises/PixabayAPI';
 import GlobalStyles from './theme/GlobalStyles';
@@ -31,6 +31,10 @@ class App extends Component {
     try {
       this.setState({ isLoading: true });
       const result = await queryPixabayAPI(query, page);
+      console.log(result);
+      if (result.length === 0) {
+        toast.error('No images found');
+      }
       this.setState(prev => {
         return { query, page, searchResult: [...prev.searchResult, ...result] };
       });
@@ -50,7 +54,6 @@ class App extends Component {
       const query = this.state.query;
       const page = this.state.page;
       this.fetchImages(query, page);
-      window.scrollTo({ bottom: -100, left: 0, behavior: 'smooth' });
     }
   }
 
