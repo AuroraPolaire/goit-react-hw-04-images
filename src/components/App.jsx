@@ -7,7 +7,6 @@ import SearchBar from './Searchbar/SearchBar';
 import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import { Oval } from 'react-loader-spinner';
-import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 class App extends Component {
   state = {
