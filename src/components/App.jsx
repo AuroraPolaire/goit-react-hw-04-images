@@ -13,6 +13,7 @@ class App extends Component {
     query: '',
     page: 1,
     searchResult: [],
+    total: 0,
     isLoading: false,
     error: false,
   };
@@ -31,12 +32,22 @@ class App extends Component {
     try {
       this.setState({ isLoading: true });
       const result = await queryPixabayAPI(query, page);
-      console.log(result);
-      if (result.length === 0) {
+
+      if (result.hits.length === 0) {
         toast.error('No images found');
       }
+
+      if (this.state.page === 1 && result.hits.length !== 0) {
+        toast.success(`${result.total} images found`);
+      }
+
       this.setState(prev => {
-        return { query, page, searchResult: [...prev.searchResult, ...result] };
+        return {
+          query,
+          page,
+          searchResult: [...prev.searchResult, ...result.hits],
+          total: result.total,
+        };
       });
     } catch (error) {
       this.setState({ error: true });
@@ -56,6 +67,11 @@ class App extends Component {
       this.fetchImages(query, page);
     }
   }
+
+  checkPagesSum = page => {
+    const pagesSum = this.state.total / 12;
+    return page < pagesSum;
+  };
 
   render() {
     return (
@@ -77,7 +93,8 @@ class App extends Component {
         <ImageGallery searchResult={this.state.searchResult} />
         {this.state.query !== '' &&
           this.state.searchResult.length !== 0 &&
-          this.state.isLoading !== true && (
+          this.state.isLoading !== true &&
+          this.checkPagesSum(this.state.page) && (
             <Button handleLoadMore={this.handleLoadMore} />
           )}
         <ToastContainer />

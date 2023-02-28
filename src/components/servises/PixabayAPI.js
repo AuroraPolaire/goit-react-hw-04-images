@@ -12,7 +12,7 @@ export const queryPixabayAPI = async (query, page) => {
   };
 
   const { data } = await axios.get('https://pixabay.com/api/', { params });
-  return data.hits;
+  return data;
 };
 
 queryPixabayAPI.propTypes = {
