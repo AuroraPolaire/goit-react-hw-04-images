@@ -7,6 +7,7 @@ import SearchBar from './Searchbar/SearchBar';
 import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import { Oval } from 'react-loader-spinner';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 class App extends Component {
   state = {
@@ -78,6 +79,8 @@ class App extends Component {
       <>
         <GlobalStyles />
         <SearchBar onSubmit={this.handleSubmit} />
+
+        <ImageGallery searchResult={this.state.searchResult} />
         {this.state.isLoading === true && (
           <Oval
             ariaLabel="loading-indicator"
@@ -90,7 +93,6 @@ class App extends Component {
             wrapperClass="loader"
           />
         )}
-        <ImageGallery searchResult={this.state.searchResult} />
         {this.state.query !== '' &&
           this.state.searchResult.length !== 0 &&
           this.state.isLoading !== true &&
