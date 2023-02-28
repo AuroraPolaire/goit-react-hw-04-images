@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { queryPixabayAPI } from './servises/PixabayAPI';
 import GlobalStyles from './theme/GlobalStyles';
