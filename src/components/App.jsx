@@ -6,7 +6,7 @@ import GlobalStyles from './theme/GlobalStyles';
 import SearchBar from './Searchbar/SearchBar';
 import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
-import { Oval } from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 
 class App extends Component {
   state = {
@@ -19,13 +19,7 @@ class App extends Component {
   };
 
   handleSubmit = inputValue => {
-    if (inputValue === 0) {
-      return;
-    }
-    const query = inputValue;
-    const page = 1;
-    this.setState({ query, page, searchResult: [] });
-    this.fetchImages(query, page);
+    this.setState({ query: inputValue, page: 1, searchResult: [] });
   };
 
   fetchImages = async (query, page) => {
@@ -61,7 +55,10 @@ class App extends Component {
   };
 
   componentDidUpdate(_, prevState) {
-    if (prevState.page !== this.state.page) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.query !== this.state.query
+    ) {
       const query = this.state.query;
       const page = this.state.page;
       this.fetchImages(query, page);
@@ -81,15 +78,15 @@ class App extends Component {
 
         <ImageGallery searchResult={this.state.searchResult} />
         {this.state.isLoading === true && (
-          <Oval
-            ariaLabel="loading-indicator"
-            height={150}
-            width={150}
-            strokeWidth={10}
-            strokeWidthSecondary={1}
+          <ThreeDots
+            height="80"
+            width="80"
+            radius="9"
             color="blue"
-            secondaryColor="white"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
             wrapperClass="loader"
+            visible={true}
           />
         )}
         {this.state.query !== '' &&

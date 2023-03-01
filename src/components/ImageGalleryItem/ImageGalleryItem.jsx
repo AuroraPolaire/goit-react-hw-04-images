@@ -16,28 +16,16 @@ class ImageGalleryItem extends Component {
   };
 
   openModal = event => {
-    this.setState({ imageUrl: event.target.getAttribute('data-url') });
-    this.setState({ imageTag: event.target.getAttribute('data-tag') });
-    this.setState({ isModalOpen: true });
+    this.setState({
+      imageUrl: event.target.getAttribute('data-url'),
+      imageTag: event.target.getAttribute('data-tag'),
+      isModalOpen: true,
+    });
   };
 
   closeModal = () => {
     this.setState({ isModalOpen: false });
   };
-
-  onKeyDown = event => {
-    if (event.key === 'Escape') {
-      this.closeModal();
-    }
-  };
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
-  }
 
   render() {
     const { images } = this.props;
@@ -48,9 +36,9 @@ class ImageGalleryItem extends Component {
             <ImageGalleryItemStyled key={image.id}>
               {this.state.isModalOpen && (
                 <Modal
+                  closeModal={this.closeModal}
                   image={this.state.imageUrl}
                   imageTag={this.state.imageTag}
-                  closeModal={this.closeModal}
                 />
               )}
 

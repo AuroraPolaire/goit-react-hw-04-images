@@ -36,7 +36,6 @@ class SearchBar extends Component {
         <form className="SearchForm" onSubmit={this.handleSubmit}>
           <button type="submit" className="SearchForm-button">
             <FaSearch style={style} />
-            {/* <span className="SearchForm-button-label">Search</span> */}
           </button>
 
           <input
