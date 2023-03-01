@@ -23,16 +23,20 @@ class Modal extends Component {
     }
   };
 
+  handleBackdropClick = event => {
+    console.log(event.target);
+    console.log(event.currentTarget);
+    if (event.target === event.currentTarget) {
+      this.props.closeModal();
+    }
+  };
+
   render() {
     return (
       <>
         {}
-        <Backdrop onClick={this.props.closeModal}>
-          <ModalWindow
-            src={this.props.image}
-            alt={this.props.imageTag}
-            onClick={this.props.closeModal}
-          />
+        <Backdrop onClick={this.handleBackdropClick}>
+          <ModalWindow src={this.props.image} alt={this.props.imageTag} />
         </Backdrop>
       </>
     );

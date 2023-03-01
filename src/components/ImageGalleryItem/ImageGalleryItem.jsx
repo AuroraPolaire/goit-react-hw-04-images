@@ -12,7 +12,6 @@ class ImageGalleryItem extends Component {
     isModalOpen: false,
     imageUrl: '',
     imageTag: '',
-    pressedKey: '',
   };
 
   openModal = event => {
