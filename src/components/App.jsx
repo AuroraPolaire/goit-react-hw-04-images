@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import {useUpdateEffect} from 'react-use';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { queryPixabayAPI } from './servises/PixabayAPI';
@@ -8,76 +9,66 @@ import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import { ThreeDots } from 'react-loader-spinner';
 
-class App extends Component {
-  state = {
-    query: '',
-    page: 1,
-    searchResult: [],
-    total: 0,
-    isLoading: false,
-    error: false,
+const App = () => {
+
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [searchResult, setSearchResult] = useState([]);
+  const [total, setTotal] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = inputValue => {
+    setQuery(inputValue);
+    setPage(1);
+    setSearchResult([])
   };
 
-  handleSubmit = inputValue => {
-    this.setState({ query: inputValue, page: 1, searchResult: [] });
-  };
 
-  fetchImages = async (query, page) => {
-    try {
-      this.setState({ isLoading: true });
-      const result = await queryPixabayAPI(query, page);
-
-      if (result.hits.length === 0) {
+  useUpdateEffect(() => {
+    const fetchImages = async (query, page) => {
+      try {
+        setIsLoading(true);
+        const result = await queryPixabayAPI(query, page);
+  
+        if (result.hits.length === 0) {
+          toast.error('No images found');
+        }
+  
+        if (page === 1 && result.hits.length !== 0) {
+          toast.success(`${result.total} images found`);
+        }
+        setSearchResult(prevResult => ([...prevResult, ...result.hits]));
+        setTotal(result.total);
+        
+      } catch (error) {
         toast.error('No images found');
+      } finally {
+        setIsLoading(false);
       }
+    };
+    fetchImages(query, page)
+      }, [query, page])
 
-      if (this.state.page === 1 && result.hits.length !== 0) {
-        toast.success(`${result.total} images found`);
-      }
+  
 
-      this.setState(prev => {
-        return {
-          query,
-          page,
-          searchResult: [...prev.searchResult, ...result.hits],
-          total: result.total,
-        };
-      });
-    } catch (error) {
-      this.setState({ error: true });
-    } finally {
-      this.setState({ isLoading: false });
-    }
+  const handleLoadMore = () => {
+    setPage(prevPage => (prevPage + 1 ));
   };
 
-  handleLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-  };
 
-  componentDidUpdate(_, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.query !== this.state.query
-    ) {
-      const query = this.state.query;
-      const page = this.state.page;
-      this.fetchImages(query, page);
-    }
-  }
 
-  checkPagesSum = page => {
-    const pagesSum = this.state.total / 12;
+  const checkPagesSum = page => {
+    const pagesSum = total / 12;
     return page < pagesSum;
   };
 
-  render() {
     return (
       <>
         <GlobalStyles />
-        <SearchBar onSubmit={this.handleSubmit} />
+        <SearchBar onSubmit={handleSubmit} />
 
-        <ImageGallery searchResult={this.state.searchResult} />
-        {this.state.isLoading === true && (
+        <ImageGallery searchResult={searchResult} />
+        {isLoading === true && (
           <ThreeDots
             height="80"
             width="80"
@@ -89,16 +80,13 @@ class App extends Component {
             visible={true}
           />
         )}
-        {this.state.query !== '' &&
-          this.state.searchResult.length !== 0 &&
-          this.state.isLoading !== true &&
-          this.checkPagesSum(this.state.page) && (
-            <Button handleLoadMore={this.handleLoadMore} />
+        {query !== '' && searchResult.length !== 0 && isLoading !== true && checkPagesSum(page) && (
+            <Button handleLoadMore={handleLoadMore} />
           )}
         <ToastContainer />
       </>
     );
   }
-}
+
 
 export default App;

@@ -1,43 +1,36 @@
 import ImageGalleryItemStyled from './ImageGalleryItem.styled';
 import Modal from 'components/Modal/Modal';
-import React, { Component } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-class ImageGalleryItem extends Component {
-  static propTypes = {
-    props: PropTypes.arrayOf(PropTypes.object.isRequired),
+const ImageGalleryItem = ({images}) => {
+ const [isModalOpen, setModalOpen] = useState(false);
+ const [imageUrl, setImageUrl] = useState('');
+ const [imageTag, setImageTag] = useState('');
+
+
+const openModal = event => {
+  
+      setImageUrl(event.target.getAttribute('data-url'));
+      setImageTag(event.target.getAttribute('data-tag'));
+      setModalOpen(true);
+ 
   };
 
-  state = {
-    isModalOpen: false,
-    imageUrl: '',
-    imageTag: '',
+ const closeModal = () => {
+  setModalOpen(false);
   };
 
-  openModal = event => {
-    this.setState({
-      imageUrl: event.target.getAttribute('data-url'),
-      imageTag: event.target.getAttribute('data-tag'),
-      isModalOpen: true,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({ isModalOpen: false });
-  };
-
-  render() {
-    const { images } = this.props;
     return (
       <>
         {images.map(image => {
           return (
             <ImageGalleryItemStyled key={image.id}>
-              {this.state.isModalOpen && (
+              {isModalOpen && (
                 <Modal
-                  closeModal={this.closeModal}
-                  image={this.state.imageUrl}
-                  imageTag={this.state.imageTag}
+                  closeModal={closeModal}
+                  image={imageUrl}
+                  imageTag={imageTag}
                 />
               )}
 
@@ -47,14 +40,19 @@ class ImageGalleryItem extends Component {
                 alt={image.tags}
                 data-tag={image.tags}
                 data-url={image.largeImageURL}
-                onClick={this.openModal}
+                onClick={openModal}
               />
             </ImageGalleryItemStyled>
           );
         })}
       </>
-    );
+    )
   }
-}
+
 
 export default ImageGalleryItem;
+
+
+ImageGalleryItem.propTypes = {
+  props: PropTypes.arrayOf(PropTypes.object.isRequired),
+};
