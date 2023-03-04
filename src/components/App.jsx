@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import {useUpdateEffect} from 'react-use';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { queryPixabayAPI } from './servises/PixabayAPI';
@@ -24,7 +23,10 @@ const App = () => {
   };
 
 
-  useUpdateEffect(() => {
+  useEffect(() => {
+    if(!query){
+      return;
+    }
     const fetchImages = async (query, page) => {
       try {
         setIsLoading(true);
